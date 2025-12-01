@@ -3,7 +3,11 @@ import { join, dirname } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import { GoogleGenerativeAI } from '@google/generative-ai'
-import { promises as fs } from 'fs'; // <--- AJOUT IMPORTANT
+import { promises as fs } from 'fs';
+import { config } from 'dotenv'
+
+// Charger les variables d'environnement depuis .env
+config()
 
 // Clé API depuis variable d'environnement (sécurisé)
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY || ""
