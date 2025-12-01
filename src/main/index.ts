@@ -5,8 +5,8 @@ import icon from '../../resources/icon.png?asset'
 import { GoogleGenerativeAI } from '@google/generative-ai'
 import { promises as fs } from 'fs'; // <--- AJOUT IMPORTANT
 
-// 1. COLLEZ LA NOUVELLE CLÉ ICI (Celle du "New Project")
-const GEMINI_API_KEY = "AIzaSyBNTZhWHW3UT74sfmFQJe9ZbS9g6X2im4M"
+// Clé API depuis variable d'environnement (sécurisé)
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY || ""
 
 const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 // 2. ON UTILISE LE MODÈLE STANDARD
