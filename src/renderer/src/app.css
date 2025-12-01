@@ -1,0 +1,392 @@
+/* Police système - Google Fonts bloqué par CSP Electron */
+
+/* --- SCROLLBAR INVISIBLE / DISCRÈTE --- */
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent; 
+}
+*::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  border: 2px solid var(--bg-deep);
+}
+*::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+:root {
+  /* Palette Calme */
+  --bg-deep: #1E2A38;
+  --bg-card: #253343; /* Légèrement plus clair pour les cartes */
+  --accent: #6EE7D6;  /* Turquoise pastel */
+  --accent-dim: rgba(110, 231, 214, 0.1);
+  --text-main: #F0F4F8;
+  --text-muted: #8B9BB4;
+  
+  /* Ergonomie */
+  --radius: 24px;
+  --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--bg-deep);
+  color: var(--text-main);
+  /* Texture "Papier Mat" via un bruit subtil */
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+  height: 100vh;
+  overflow: hidden; /* App feel */
+}
+
+/* --- Typographie --- */
+h1, h2, h3 { font-weight: 600; letter-spacing: -0.5px; margin: 0; }
+p { color: var(--text-muted); line-height: 1.6; }
+
+/* --- Containers --- */
+.app-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 40px;
+  box-sizing: border-box;
+}
+
+/* --- ÉCRAN D'ACCUEIL --- */
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  animation: fadeIn 0.8s ease-out;
+}
+
+.quote {
+  font-size: 0.9rem;
+  opacity: 0.7;
+  margin-bottom: 40px;
+  font-style: italic;
+  letter-spacing: 0.5px;
+}
+
+/* Le fameux Bouton "Deep Work" */
+.start-focus-btn {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  border: none;
+  background: var(--bg-card);
+  color: var(--accent);
+  font-size: 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2), inset 0 0 0 2px var(--accent-dim);
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.start-focus-btn::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+
+.start-focus-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 20px 60px rgba(110, 231, 214, 0.15);
+  color: #fff;
+}
+.start-focus-btn:hover::after { opacity: 0.1; }
+
+/* L'arbre qui grandit */
+.tree-container {
+  margin-top: 50px;
+  opacity: 0.8;
+  transition: var(--transition);
+}
+
+/* --- MODE FOCUS (Minimaliste) --- */
+.focus-mode {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: var(--bg-deep);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.timer-large {
+  font-size: 5rem;
+  font-weight: 300;
+  font-feature-settings: "tnum"; /* Chiffres monospaces */
+  color: var(--text-main);
+  margin-bottom: 20px;
+}
+
+/* Cercle Progressif SVG */
+.progress-ring { transform: rotate(-90deg); }
+.progress-ring__circle {
+  transition: stroke-dashoffset 1s linear;
+  stroke: var(--accent);
+  stroke-linecap: round;
+}
+
+/* --- TASKS (Intégration douce) --- */
+.mini-task-list {
+  width: 100%;
+  max-width: 400px;
+  margin-top: 40px;
+}
+.task-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--bg-card);
+  color: var(--text-main);
+  padding: 10px 0;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.3s;
+}
+.task-input:focus { border-bottom-color: var(--accent); }
+
+/* Animations */
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* --- MODAL (FOCUS HUB) --- */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(10, 15, 25, 0.8);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+  background: var(--bg-card);
+  width: 90%;
+  max-width: 600px;
+  height: 70vh;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal-header {
+  padding: 20px 30px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-body {
+  flex: 1;
+  padding: 30px;
+  overflow-y: auto;
+}
+
+textarea.notes-area {
+  width: 100%;
+  height: 300px;
+  background: rgba(0,0,0,0.2);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  color: var(--text-main);
+  padding: 15px;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  resize: none;
+  outline: none;
+}
+textarea.notes-area:focus { border-color: var(--accent); }
+
+.ai-pill {
+  background: linear-gradient(135deg, var(--accent) 0%, #4facfe 100%);
+  color: #1e2a38;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: transform 0.2s;
+}
+.ai-pill:hover { transform: scale(1.05); }
+.ai-pill:disabled { opacity: 0.6; cursor: not-allowed; }
+
+@keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+/* --- KANBAN BOARD --- */
+.view-switcher { display: flex; gap: 10px; margin-bottom: 20px; }
+.view-btn { background: transparent; border: 1px solid #45475a; color: var(--text-muted); padding: 5px 15px; border-radius: 20px; cursor: pointer; transition: all 0.2s; }
+.view-btn:hover { border-color: var(--accent); }
+.view-btn.active { background: var(--accent); color: var(--bg-deep); font-weight: bold; border-color: var(--accent); }
+
+.kanban-board {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  padding-bottom: 20px;
+  height: calc(100vh - 250px);
+}
+
+.kanban-column {
+  min-width: 300px;
+  background: rgba(0,0,0,0.2);
+  border-radius: 16px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.kanban-header { font-weight: bold; margin-bottom: 15px; color: var(--text-muted); text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; }
+
+/* --- TAGS & METRICS --- */
+.tag { font-size: 0.7rem; padding: 2px 8px; border-radius: 4px; background: rgba(255,255,255,0.1); margin-right: 5px; }
+.tag.work { color: #a6e3a1; background: rgba(166, 227, 161, 0.1); }
+.tag.urgent { color: #f38ba8; background: rgba(243, 139, 168, 0.1); }
+.tag.personal { color: #89b4fa; background: rgba(137, 180, 250, 0.1); }
+
+.time-badge { font-size: 0.75rem; color: var(--text-muted); display: flex; align-items: center; gap: 4px; }
+
+/* --- PROCRASTINATION HELPER --- */
+.unstuck-btn {
+  background: linear-gradient(45deg, #f9a8d4, #cba6f7);
+  color: #1e2a38; border: none; padding: 8px 16px; border-radius: 8px; font-weight: bold; cursor: pointer;
+  transition: transform 0.2s;
+}
+.unstuck-btn:hover { transform: scale(1.02); }
+.unstuck-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* --- LAYOUT PRINCIPAL (Sidebar + Contenu) --- */
+.main-layout {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  background: var(--bg-deep);
+  overflow: hidden;
+}
+
+/* --- SIDEBAR --- */
+.sidebar {
+  width: 70px;
+  background: #151e29;
+  border-right: 1px solid rgba(255,255,255,0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 30px;
+  flex-shrink: 0;
+  z-index: 50;
+}
+
+.nav-icon {
+  width: 40px; height: 40px;
+  margin-bottom: 20px;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 1.2rem;
+}
+.nav-icon:hover { background: rgba(255,255,255,0.05); color: white; }
+.nav-icon.active { background: var(--accent); color: var(--bg-deep); box-shadow: 0 0 15px rgba(110, 231, 214, 0.3); }
+
+/* Zone de contenu principale */
+.content-area {
+  flex: 1;
+  padding: 30px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- CALENDRIER DARK MODE (Overrides react-big-calendar) --- */
+.rbc-calendar { font-family: -apple-system, BlinkMacSystemFont, sans-serif; color: var(--text-muted); }
+
+/* Fond et Grille */
+.rbc-header { border-bottom: 1px solid rgba(255,255,255,0.1); padding: 10px 0; font-weight: bold; color: white; background: transparent; }
+.rbc-month-view, .rbc-time-view, .rbc-agenda-view { border: none; background: transparent; }
+.rbc-day-bg + .rbc-day-bg { border-left: 1px solid rgba(255,255,255,0.05); }
+.rbc-month-row + .rbc-month-row { border-top: 1px solid rgba(255,255,255,0.05); }
+.rbc-timeslot-group { border-bottom: 1px solid rgba(255,255,255,0.05); }
+.rbc-time-content { border-top: 1px solid rgba(255,255,255,0.05); }
+.rbc-time-header-content { border-left: 1px solid rgba(255,255,255,0.05); }
+.rbc-today { background: rgba(110, 231, 214, 0.05); }
+.rbc-off-range-bg { background: rgba(0,0,0,0.2); }
+.rbc-date-cell { color: var(--text-muted); padding: 5px; }
+.rbc-date-cell.rbc-now { color: var(--accent); font-weight: bold; }
+
+/* Événements (Blocs de tâches) */
+.rbc-event {
+  background: var(--bg-card);
+  border: 1px solid var(--accent);
+  color: white;
+  border-radius: 6px;
+  padding: 5px;
+  font-size: 0.85rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+.rbc-event:focus { outline: none; }
+.rbc-event-label { display: none; }
+.rbc-event-content { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* Toolbar du calendrier */
+.rbc-toolbar { margin-bottom: 20px; }
+.rbc-toolbar button { color: white; border: 1px solid #444; background: transparent; padding: 5px 12px; border-radius: 6px; cursor: pointer; }
+.rbc-toolbar button:hover { background: #333; }
+.rbc-toolbar button.rbc-active { background: var(--accent); color: var(--bg-deep); border-color: var(--accent); }
+.rbc-toolbar-label { font-weight: bold; font-size: 1.1rem; color: white; }
+
+/* Time slots */
+.rbc-time-slot { color: var(--text-muted); }
+.rbc-label { color: var(--text-muted); }
+.rbc-current-time-indicator { background-color: var(--accent); height: 2px; }
+
+/* --- DRAG & DROP STYLES --- */
+.rbc-addons-dnd .rbc-event {
+  cursor: move;
+}
+.rbc-addons-dnd-resize-ns-icon,
+.rbc-addons-dnd-resize-ew-icon {
+  display: none;
+}
+.rbc-addons-dnd-resizable-month-event .rbc-addons-dnd-resize-month-event-anchor {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 16px;
+  height: 16px;
+  cursor: se-resize;
+}
+.rbc-addons-dnd-drag-row {
+  background: rgba(110, 231, 214, 0.1);
+  border: 1px dashed var(--accent);
+}
+.rbc-addons-dnd-over {
+  background: rgba(110, 231, 214, 0.15);
+}
