@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BOY - Maîtrisez votre temps</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #151e29;
+            --bg-card: #1e2a38;
+            --accent: #6EE7D6;
+            --accent-glow: rgba(110, 231, 214, 0.4);
+            --text-main: #ffffff;
+            --text-muted: #8B9BB4;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        /* --- NAVIGATION --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 90%;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: var(--accent);
+            letter-spacing: -1px;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-left: 30px;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover { color: white; }
+
+        .btn-download {
+            background: var(--accent);
+            color: var(--bg-deep);
+            padding: 10px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-download:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px var(--accent-glow);
+        }
+
+        /* --- HERO SECTION --- */
+        header {
+            text-align: center;
+            padding: 150px 20px 100px;
+            background: radial-gradient(circle at 50% 20%, #2a3b4d 0%, var(--bg-deep) 60%);
+        }
+
+        h1 {
+            font-size: 4rem;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, #fff, #8B9BB4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p.subtitle {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+
+        /* --- MOCKUP APP --- */
+        .app-mockup {
+            width: 80%;
+            max-width: 1000px;
+            height: 600px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 50px 100px -20px rgba(0,0,0,0.5);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Simulation interface si pas d'image */
+        .mockup-content {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        .mockup-placeholder {
+            border: 2px dashed var(--text-muted);
+            padding: 40px;
+            border-radius: 10px;
+            opacity: 0.5;
+        }
+        
+        .mockup-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 20px;
+        }
+        
+        /* --- SCREENSHOTS GALLERY --- */
+        .screenshots-gallery {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 60px;
+            padding: 0 5%;
+            flex-wrap: wrap;
+        }
+        
+        .screenshot-item {
+            flex: 1;
+            min-width: 280px;
+            max-width: 350px;
+            background: var(--bg-card);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 20px 50px -10px rgba(0,0,0,0.4);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .screenshot-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px -10px rgba(0,0,0,0.5);
+        }
+        
+        .screenshot-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* --- FEATURES --- */
+        .features {
+            padding: 100px 5%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        .feature-card {
+            background: rgba(255,255,255,0.03);
+            padding: 40px;
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: transform 0.3s;
+        }
+        .feature-card:hover { transform: translateY(-5px); background: rgba(255,255,255,0.05); }
+
+        .icon { font-size: 2rem; margin-bottom: 20px; }
+        h3 { color: var(--accent); margin-bottom: 10px; }
+
+        /* --- FOOTER (CREDITS) --- */
+        footer {
+            text-align: center;
+            padding: 80px 20px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            color: var(--text-muted);
+        }
+
+        .creator-badge {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 8px 20px;
+            background: rgba(110, 231, 214, 0.1);
+            border: 1px solid var(--accent);
+            border-radius: 50px;
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .heart { color: #ff6b6b; }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            .app-mockup { height: 300px; }
+            nav { position: relative; width: 90%; padding: 20px 5%; }
+            .nav-links { display: none; }
+            .screenshots-gallery {
+                flex-direction: column;
+                align-items: center;
+            }
+            .screenshot-item {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">BOY.</div>
+        <div class="nav-links">
+            <a href="#features">Fonctionnalités</a>
+            <a href="#privacy">Vie Privée</a>
+            <a href="#download" class="btn-download">Télécharger v1.0</a>
+        </div>
+    </nav>
+
+    <header>
+        <h1>Retrouvez votre Flow.</h1>
+        <p class="subtitle">
+            L'espace de travail ultime pour les makers.
+            Combinez Deep Work, Planning et Intelligence Artificielle dans une seule application locale.
+        </p>
+        <div style="margin-bottom: 60px;">
+            <a href="#" class="btn-download" style="padding: 15px 40px; font-size: 1.1rem;">
+                Télécharger BOY pour Windows
+            </a>
+            <p style="font-size: 0.8rem; margin-top: 15px; opacity: 0.6;">Windows 10/11 • 64-bit</p>
+        </div>
+
+        <div class="app-mockup">
+            <img src="image/screenshot.png" alt="BOY - Interface principale" class="mockup-image">
+        </div>
+        
+        <div class="screenshots-gallery">
+            <div class="screenshot-item">
+                <img src="image/screenshot.png" alt="BOY Screenshot 1">
+            </div>
+            <div class="screenshot-item">
+                <img src="image/screenshot2.png" alt="BOY Screenshot 2">
+            </div>
+            <div class="screenshot-item">
+                <img src="image/screenshot3.png" alt="BOY Screenshot 3">
+            </div>
+        </div>
+    </header>
+
+    <section id="features" class="features">
+        <div class="feature-card">
+            <div class="icon">⚡</div>
+            <h3>Propulsé par Gemini</h3>
+            <p>Bloqué sur une tâche ? Cliquez sur le bouton "Magic". L'IA décompose votre travail, rédige vos plans et vous aide à vaincre la procrastination.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon">📅</div>
+            <h3>Planning Intelligent</h3>
+            <p>Glissez-déposez vos tâches directement dans votre calendrier. Time Blocking visuel pour des journées parfaitement structurées.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon">🔒</div>
+            <h3>100% Local & Privé</h3>
+            <p>Vos données ne quittent jamais votre PC. Pas de compte requis, pas de cloud, pas de tracking. Juste vous et votre travail.</p>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 BOY. Tous droits réservés.</p>
+        
+        <div class="creator-badge">
+            Développée et conçue par Oussama Abid
+        </div>
+        <p style="margin-top: 20px; font-size: 0.8rem;">
+            Fait avec <span class="heart">❤</span> pour la communauté Open Source.
+        </p>
+    </footer>
+
+</body>
+</html>
