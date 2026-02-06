@@ -338,38 +338,6 @@
             <h3>Deep Work Timer</h3>
             <p>Pomodoro intégré. Suivi du temps de focus. Notifications, historique des sessions. Construisez votre habitude de travail en profondeur.</p>
         </div>
-    </section>
-
-    <section id="security" style="padding: 100px 5%; background: rgba(0,0,0,0.2);">
-        <h2 style="text-align: center; color: var(--accent); margin-bottom: 40px;">🔐 Vérification de Sécurité</h2>
-        
-        <div style="max-width: 800px; margin: 0 auto;">
-            <div class="security-section">
-                <h4>Vérifiez l'intégrité du fichier téléchargé</h4>
-                <p>Pour vous assurer que le fichier n'a pas été compromis, vérifiez son hash SHA256 :</p>
-                
-                <p style="font-weight: bold; margin-top: 20px;">📥 Fichier : boy-1.2.0-setup.exe</p>
-                <p style="font-weight: bold; margin: 10px 0 5px;">🔒 SHA256 :</p>
-                <div class="hash-box">25c9ba882828bd2d2a4747d315f322815e3b8f30f270a84973d81068c27a64d9</div>
-                <button class="copy-btn" onclick="navigator.clipboard.writeText('25c9ba882828bd2d2a4747d315f322815e3b8f30f270a84973d81068c27a64d9'); alert('Hash copié !')">📋 Copier le hash</button>
-
-                <h4 style="margin-top: 30px;">Comment vérifier ?</h4>
-                <p><strong>Sous Windows :</strong></p>
-                <div class="hash-box" style="color: #6EE7D6;">
-certutil -hashfile boy-1.2.0-setup.exe SHA256
-                </div>
-
-                <p style="margin-top: 15px;"><strong>Sous macOS/Linux :</strong></p>
-                <div class="hash-box" style="color: #6EE7D6;">
-sha256sum boy-1.2.0-setup.exe
-                </div>
-
-                <p style="margin-top: 20px; color: var(--text-muted); font-size: 0.9rem;">
-                    ✅ Le hash affiché doit correspondre exactement avec le hash de votre fichier téléchargé.
-                </p>
-            </div>
-        </div>
-    </section>
 
     <footer>
         <p>&copy; 2026 BOY. Tous droits réservés.</p>
