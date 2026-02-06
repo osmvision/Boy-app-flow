@@ -181,6 +181,19 @@
         .icon { font-size: 2rem; margin-bottom: 20px; }
         h3 { color: var(--accent); margin-bottom: 10px; }
 
+        /* --- VERSION BADGE --- */
+        .version-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            background: rgba(110, 231, 214, 0.1);
+            border: 1px solid var(--accent);
+            border-radius: 20px;
+            color: var(--accent);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
         /* --- FOOTER (CREDITS) --- */
         footer {
             text-align: center;
@@ -226,7 +239,7 @@
         <div class="nav-links">
             <a href="#features">Fonctionnalités</a>
             <a href="#privacy">Vie Privée</a>
-            <a href="https://github.com/osmvision/Boy-app-flow/releases/download/v1.0.1/boy-1.0.1-setup.exe" class="btn-download">Télécharger v1.0.1</a>
+            <a href="https://github.com/osmvision/Boy-app-flow/releases/download/v1.2.0/boy-1.0.0-setup.exe" class="btn-download">Télécharger v1.2.0</a>
         </div>
     </nav>
 
@@ -237,10 +250,11 @@
             Combinez Deep Work, Planning et Intelligence Artificielle dans une seule application locale.
         </p>
         <div style="margin-bottom: 60px;">
-            <a href="https://github.com/osmvision/Boy-app-flow/releases/download/v1.0.1/boy-1.0.1-setup.exe" class="btn-download" style="padding: 15px 40px; font-size: 1.1rem;">
+            <div class="version-badge">✨ v1.2.0 - Ollama Integration & Calendrier Amélioré</div>
+            <a href="https://github.com/osmvision/Boy-app-flow/releases/download/v1.2.0/boy-1.0.0-setup.exe" class="btn-download" style="padding: 15px 40px; font-size: 1.1rem;">
                 Télécharger BOY pour Windows
             </a>
-            <p style="font-size: 0.8rem; margin-top: 15px; opacity: 0.6;">Windows 10/11 • 64-bit • v1.0.1</p>
+            <p style="font-size: 0.8rem; margin-top: 15px; opacity: 0.6;">Windows 10/11 • 64-bit • v1.2.0</p>
         </div>
 
         <div class="app-mockup">
@@ -262,28 +276,46 @@
 
     <section id="features" class="features">
         <div class="feature-card">
-            <div class="icon">⚡</div>
-            <h3>Propulsé par Gemini</h3>
-            <p>Bloqué sur une tâche ? Cliquez sur le bouton "Magic". L'IA décompose votre travail, rédige vos plans et vous aide à vaincre la procrastination.</p>
+            <div class="icon">🤖</div>
+            <h3>IA Locale avec Ollama</h3>
+            <p>Propulsé par Ollama et Mistral. Bloqué sur une tâche ? Cliquez sur le bouton "Magic". L'IA décompose votre travail, rédige vos plans et vous aide à vaincre la procrastination. 100% local, aucune limite.</p>
         </div>
         <div class="feature-card">
             <div class="icon">📅</div>
-            <h3>Planning Intelligent</h3>
-            <p>Glissez-déposez vos tâches directement dans votre calendrier. Time Blocking visuel pour des journées parfaitement structurées.</p>
+            <h3>Calendrier Ultra Lisible</h3>
+            <p>Vues Mois, Semaine, Jour, Agenda. Glissez-déposez vos tâches directement dans votre calendrier. Couleurs par statut, tags visibles, temps passé affiché. Time Blocking visuel perfectionné.</p>
         </div>
         <div class="feature-card">
             <div class="icon">🔒</div>
             <h3>100% Local & Privé</h3>
-            <p>Vos données ne quittent jamais votre PC. Pas de compte requis, pas de cloud, pas de tracking. Juste vous et votre travail.</p>
+            <p>Vos données ne quittent jamais votre PC. Pas de compte requis, pas de cloud, pas de tracking. Juste vous et votre travail. Fonctionne entièrement offline.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon">⚙️</div>
+            <h3>Installation Automatisée</h3>
+            <p>Script d'installation PowerShell en 1 commande. Télécharge Ollama, configure le modèle Mistral, et lance l'app. Pas de configuration manuelle requise.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon">✨</div>
+            <h3>Décomposition IA</h3>
+            <p>Cliquez sur une tâche et laissez l'IA la découper en sous-étapes. Brainstorm automatique, analyse de procrastination, motifs de travail intelligents.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon">⏱️</div>
+            <h3>Deep Work Timer</h3>
+            <p>Pomodoro intégré. Suivi du temps de focus. Notifications, historique des sessions. Construisez votre habitude de travail en profondeur.</p>
         </div>
     </section>
 
     <footer>
-        <p>&copy; 2024 BOY. Tous droits réservés.</p>
+        <p>&copy; 2026 BOY. Tous droits réservés.</p>
         
         <div class="creator-badge">
             Développée et conçue par Oussama Abid
         </div>
+        <p style="margin-top: 20px; font-size: 0.8rem;">
+            v1.2.0 • Ollama + Mistral • <a href="https://github.com/osmvision/Boy-app-flow/releases" style="color: var(--accent); text-decoration: none;">Voir les releases</a>
+        </p>
         <p style="margin-top: 20px; font-size: 0.8rem;">
             Fait avec <span class="heart">❤</span> pour la communauté Open Source.
         </p>
