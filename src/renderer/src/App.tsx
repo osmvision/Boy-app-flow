@@ -12,6 +12,49 @@ moment.locale('fr');
 const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
 
+// Fonction pour obtenir la couleur selon le statut
+const getStatusColor = (status: string) => {
+  switch(status) {
+    case 'DONE': return { bg: 'rgba(166, 227, 161, 0.2)', border: '#a6e3a1', text: '#a6e3a1' };
+    case 'IN_PROGRESS': return { bg: 'rgba(137, 180, 250, 0.2)', border: '#89b4fa', text: '#89b4fa' };
+    default: return { bg: 'rgba(249, 226, 175, 0.2)', border: '#f2e2ae', text: '#f2e2ae' };
+  }
+};
+
+// Composant personnalisé pour afficher les événements
+const CustomEventComponent = ({ event }: any) => {
+  const colors = getStatusColor(event.status);
+  const timeSpent = event.timeSpent || 0;
+  const tags = (event.tags || [])[0]; // Afficher le premier tag
+  
+  return (
+    <div style={{ 
+      padding: '8px 12px', 
+      height: '100%', 
+      overflow: 'hidden',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'space-between'
+    }}>
+      <div style={{ fontSize: '1.05rem', fontWeight: 'bold', lineHeight: '1.3', marginBottom: '4px' }}>
+        {event.title}
+      </div>
+      <div>
+        {tags && (
+          <div style={{ fontSize: '0.85rem', color: colors.text, marginBottom: '4px', fontStyle: 'italic', fontWeight: '500' }}>
+            #{tags}
+          </div>
+        )}
+        {timeSpent > 0 && (
+          <div style={{ fontSize: '0.85rem', color: '#aaa', marginTop: '2px' }}>
+            ⏱️ {timeSpent}m
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
 // --- TYPES ---
 interface Task {
   id: string;
@@ -265,6 +308,31 @@ function App() {
     });
   }, []);
 
+  // Handler pour cliquer sur un événement du calendrier
+  const handleSelectEvent = (event: any) => {
+    setSelectedTask(event);
+  };
+
+  // Handler pour double-cliquer sur une plage horaire
+  const handleSelectSlot = (slotInfo: any) => {
+    const { start, end } = slotInfo;
+    const quickTitle = prompt('Titre rapide de la tâche:');
+    if (quickTitle?.trim()) {
+      const newTask: Task = {
+        id: Date.now().toString(),
+        title: quickTitle,
+        status: 'TODO',
+        timeSpent: 0,
+        tags: ['Quick'],
+        created: Date.now(),
+        start: new Date(start),
+        end: new Date(end),
+        notes: ''
+      };
+      setTasks([...tasks, newTask]);
+    }
+  };
+
   // --- RENDERERS ---
   return (
     <div className="main-layout">
@@ -460,7 +528,23 @@ function App() {
         {/* --- VUE PLANNING (SCHEDULE) avec DRAG & DROP --- */}
         {activeTab === 'SCHEDULE' && (
           <div style={{flex: 1, display: 'flex', flexDirection: 'column'}}>
-            <div style={{flex: 1, background: '#1e2836', borderRadius: '16px', padding: '10px', boxShadow:'0 10px 30px rgba(0,0,0,0.2)', overflow: 'hidden'}}>
+            <div style={{marginBottom: '15px', display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'center'}}>
+              <div style={{ fontSize: '0.9rem', color: '#888', display: 'flex', gap: '15px', flexWrap: 'wrap' }}>
+                <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                  <span style={{ display: 'inline-block', width: '12px', height: '12px', background: '#f2e2ae', borderRadius: '2px' }}></span>
+                  À Faire
+                </span>
+                <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                  <span style={{ display: 'inline-block', width: '12px', height: '12px', background: '#89b4fa', borderRadius: '2px' }}></span>
+                  En Cours
+                </span>
+                <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                  <span style={{ display: 'inline-block', width: '12px', height: '12px', background: '#a6e3a1', borderRadius: '2px' }}></span>
+                  Terminé
+                </span>
+              </div>
+            </div>
+            <div style={{flex: 1, background: '#1e2836', borderRadius: '16px', padding: '15px', boxShadow:'0 10px 30px rgba(0,0,0,0.2)', overflow: 'hidden'}}>
               <DnDCalendar
                 localizer={localizer}
                 events={tasks.map(t => ({
@@ -473,11 +557,33 @@ function App() {
                 titleAccessor={(event: any) => event.title}
                 style={{ height: '100%' }}
                 defaultView="week"
-                views={['week', 'day']}
+                views={['month', 'week', 'day', 'agenda']}
                 step={30}
-                timeslots={2}
+                timeslots={1}
                 min={new Date(0, 0, 0, 6, 0, 0)}
                 max={new Date(0, 0, 0, 23, 59, 0)}
+                
+                // EVENT STYLING
+                eventPropGetter={(event: any) => {
+                  const colors = getStatusColor(event.status);
+                  return {
+                    style: {
+                      backgroundColor: colors.bg,
+                      borderLeft: `5px solid ${colors.border}`,
+                      borderRadius: '6px',
+                      color: '#fff',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s',
+                      fontSize: '0.95rem',
+                      fontWeight: '500'
+                    }
+                  };
+                }}
+                
+                // CUSTOM EVENT COMPONENT
+                components={{
+                  event: CustomEventComponent
+                }}
                 
                 // DRAG AND DROP HANDLERS
                 onEventDrop={onEventDrop}
@@ -485,22 +591,62 @@ function App() {
                 resizable
                 draggableAccessor={() => true}
                 
+                // EVENT SELECTION
+                onSelectEvent={handleSelectEvent}
+                onSelectSlot={handleSelectSlot}
+                selectable
+                popup
+                defaultDate={new Date()}
+                
                 formats={{
                   dayFormat: 'dddd D',
-                  timeGutterFormat: 'HH:mm'
+                  timeGutterFormat: 'HH:mm',
+                  monthHeaderFormat: 'MMMM yyyy',
+                  weekdayFormat: 'dddd',
+                  dayRangeHeaderFormat: ({ start, end }: any) => `${localizer.format(start, 'dddd D MMM')} - ${localizer.format(end, 'dddd D MMM')}`
                 }}
                 messages={{
                   next: "Suivant",
                   previous: "Précédent",
                   today: "Aujourd'hui",
+                  month: "Mois",
                   week: "Semaine",
-                  day: "Jour"
+                  day: "Jour",
+                  agenda: "Agenda",
+                  date: "Date",
+                  time: "Heure",
+                  event: "Tâche",
+                  noEventsInRange: "Aucune tâche prévue."
                 }}
               />
             </div>
-            <p style={{textAlign:'center', fontSize:'0.8rem', opacity:0.4, marginTop:'10px', flexShrink: 0}}>
-              💡 Astuce : Glissez-déposez les blocs pour organiser votre journée. Tirez le bas d'un bloc pour changer sa durée.
-            </p>
+            <div style={{
+              textAlign:'center', 
+              fontSize:'0.95rem', 
+              opacity:0.7, 
+              marginTop:'15px', 
+              flexShrink: 0,
+              lineHeight: '1.6',
+              background: 'rgba(110, 231, 214, 0.05)',
+              padding: '15px',
+              borderRadius: '10px',
+              border: '1px solid rgba(110, 231, 214, 0.1)',
+              color: '#aaa'
+            }}>
+              <div style={{ fontWeight: 'bold', color: 'white', marginBottom: '8px' }}>💡 Astuces d'utilisation :</div>
+              <div>
+                • <strong>Glissez-déposez</strong> les blocs pour réorganiser votre journée
+              </div>
+              <div>
+                • <strong>Tirez le bas</strong> d'un bloc pour changer sa durée
+              </div>
+              <div>
+                • <strong>Double-cliquez</strong> sur une plage horaire pour créer une tâche rapidement
+              </div>
+              <div>
+                • <strong>Cliquez</strong> sur une tâche pour voir les détails et utiliser l'IA
+              </div>
+            </div>
           </div>
         )}
 

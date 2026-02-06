@@ -2,19 +2,15 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join, dirname } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
-import { GoogleGenerativeAI } from '@google/generative-ai'
 import { promises as fs } from 'fs';
 import { config } from 'dotenv'
 
 // Charger les variables d'environnement depuis .env
 config()
 
-// Clé API depuis variable d'environnement (sécurisé)
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY || ""
-
-const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
-// 2. ON UTILISE LE MODÈLE STANDARD
-const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+// URL Ollama (serveur local)
+const OLLAMA_API_URL = process.env.OLLAMA_API_URL || "http://localhost:11434"
+const OLLAMA_MODEL = "mistral"  // Ou "neural-chat" pour plus léger
 
 // Définir le chemin de sauvegarde (Dans le dossier utilisateur AppData)
 const DB_PATH = join(app.getPath('userData'), 'flow-db.json');
@@ -55,10 +51,30 @@ app.whenReady().then(() => {
 
   ipcMain.handle('ask-gemini', async (_, prompt: string) => {
     try {
-      console.log("Essai avec la nouvelle clé...");
-      const result = await model.generateContent(prompt);
-      const response = await result.response;
-      return response.text();
+      console.log("Appel à Ollama...");
+      
+      const response = await fetch(`${OLLAMA_API_URL}/v1/chat/completions`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          model: OLLAMA_MODEL,
+          messages: [
+            { role: 'user', content: prompt }
+          ],
+          stream: false
+        })
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Response error:", errorText);
+        throw new Error(`Ollama Error: ${response.status} - Assurez-vous que Ollama est lancé avec 'ollama serve'`);
+      }
+
+      const data = await response.json();
+      return data.choices[0].message.content;
     } catch (error: any) {
       console.error("ERREUR:", error);
       return "Erreur : " + error.message;
